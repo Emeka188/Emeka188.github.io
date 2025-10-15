@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHEASY HUB</title>
 <style>
+body {
+
+font-family: Arial, sans-serif;
+text-align: center;
+padding: 50px;
+transition: background 0.3s, color 0.3s;
+
+
+}
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
 #firstHeader {
       background: white;
       color: black;
@@ -82,7 +100,7 @@ h2 {
 }
 </style>
 </head>
-<body>
+<body class="light-mode">
 <div id="firstHeader"><h1 style="color: orange;"><em>Welcome to CHEASY HUB</em></h1>
 <p>Your trusted partner in elevator technology and services.</p></div>
 
@@ -106,6 +124,12 @@ h2 {
       <option value="ha">Hausa</option>
     </select>
 </nav>
+<div>
+<img class="container" src="cheasyhub.jpg" alt="CHEASY HUB Logo" style="height: 960px">
+</div>
+<audio src="cheasy.m4a" style="width:100%;" controls></audio>
+<section>
+<div style="width: 100%; height: fit-content;background: #0099ff;"><h2 style="text-align: center;"><a id="services"></a>SERVICES</h2></div>
 <div class="container" style="padding: 20px;">
   <h2 style="text-align: center; color: blue;">CHUB ACCESSORIES SERVICES</h2>
   <p style="text-align: center; font-size: 18px;">At CHEASY HUB, we specialize in providing top-notch phone and laptop's services to ensure your needs are met with excellence. Our team of experienced professionals is dedicated to delivering reliable and efficient solutions for both laptop's and other gadgets or properties.</p>
@@ -118,12 +142,13 @@ h2 {
   </ul><br />
   <p style="text-align: center; font-size: 18px;">At CHEASY HUB, we are committed to delivering exceptional service and ensuring the requirements and satisfaction of our clients. Contact us today to learn more about how we can assist with your accessories needs!</p>
 </div>
-<div>
-<img class="container" src="cheasyhub.jpg" alt="CHEASY HUB Logo" style="height: 960px">
-</div>
-<audio src="cheasy.m4a" controls></audio>
-<section>
-<div style="width: 100%; height: fit-content;background: #0099ff;"><h2 style="text-align: center;"><a id="services"></a>SERVICES</h2></div>
 </section>
+<button onclick="toggleMode()">Switch Mode</button>
+<script>
+    function toggleMode() {
+        document.body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode');
+    }
+</script>
 </body>
 </html>

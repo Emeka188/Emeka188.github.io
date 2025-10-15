@@ -71,21 +71,20 @@ h1, h2 {
     color: black;
 	justify-content: space-between;
 }
-.padding {
-	padding-top: 50px;
-}
 li {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+.padding {
+	padding-top: 50px;
 }
 li:last-child {
 	border-right: none;
 }
-li a{text-align: center;
+	text-align: center;
 	padding: 14px 16px;
-	text-decoration: none;}	
-
+	text-decoration: none;
+}
 li a:hover:not(.active) {
 	background-color: #808080;
 }
@@ -138,7 +137,6 @@ ul {
 }
 .FREEmargin {
 	padding: 45px;
-	margin: 0px;
 }
 .padding {
 	padding: 0px;
@@ -146,35 +144,9 @@ ul {
 .twOpricing-cards{
 	width: 33%;
 	height: 600px;
-	border: 2px purple;
+	border: 2px pink;
 	background: #f0f4fa;
-	background-color: purple;
+	background-color: blue;
 	border-radius: 32px;
-	text-align: center;
-}
-.threecard {
-    width: 33%;
-	height: 600px;
-	border: 2px teal;
-	background: #f0f4fa;
-	background-color: teal;
-	border-radius: 32px;
-	text-align: center;
-}
-.pricing-container {
-	display: flex;
-	justify-content: center;
-	gap: 20px;
-	margin-top: 20px;
-	flex-wrap: wrap;
-}
-.pricing-cards, .twOpricing-cards, .threecard {
-	flex: 1;
-	max-width: 300px;
-}
-@media (max-width: 768px) {
-	.pricing-container {
-		flex-direction: column;
-		align-items: center;
-	}
+	display: inline-block;
 }
