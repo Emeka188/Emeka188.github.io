@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emeka Clock</title>
     <link rel="stylesheet" href="clock.css">
+    <input type="text" id="fname" onchange="myFunction()" placeholder="Input your name and tap">
     <script>
         function updateClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
         }
 
         setInterval(updateClock, 1000);
         // Initialize clock and a random background color when the page loads
         window.addEventListener('load', () => {
+            setRandomLight()
             updateClock();
-            setRandomLight();
         });
 
         // Colors to choose from
@@ -29,15 +30,21 @@
             const idx = Math.floor(Math.random() * lightColors.length);
             const color = lightColors[idx];
             document.body.style.backgroundColor = color;
-            const btn = document.getElementById('light');
+            const btn = document.getElementById("light");
             if (btn) btn.style.backgroundColor = color;
+        }
+        function myFunction() {
+            let x = document.getElementById("fname");
+            let inputValue = x.value;
+            x.value.toUpperCase();
+            document.getElementById("setInput").innerHTML = inputValue + ' Digital Clock'
         }
     </script>
 </head>
 <body>
-    <h1 style="color: brown;">Emeka's Digital Clock</h1>
-    <button onclick="setRandomLight()">LIGHT</button>
-    <div class="clock-container" id="light"style="text-align: center; margin-top: 20px;">
+    <h1 style="color: brown;" id="setInput"></h1>
+    <button onclick="setRandomLight()" >LIGHT</button>
+    <div class="clock-container" id="light" onmouseover="setRandomLight" style= "text-align: center; margin-top: 20px;">
        <div id="clock" style="font-size: 48px; font-family: monospace;"></div>
     </div>
 </body>
