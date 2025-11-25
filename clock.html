@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emeka Clock</title>
     <link rel="stylesheet" href="clock.css">
-    <input type="text" id="fname" onchange="myFunction()" placeholder="Input your name and tap">
+    <input type="text" id="fname" onchange="changeToLowerCase()" placeholder="Input your name and tap">
     <script>
         function updateClock() {
             const now = new Date();
@@ -25,27 +25,63 @@
         // Colors to choose from
         const lightColors = ['white', 'lightgray', 'lightyellow', 'lightblue', 'lightgreen'];
 
-        // Pick a random color from the array and apply it to the page (and button)
+        // Utility: determine if a color (any CSS color string) is light
+        function isColorLight(color) {
+            const el = document.createElement('div');
+            el.style.display = 'none';
+            el.style.backgroundColor = color;
+            document.body.appendChild(el);
+            const cs = getComputedStyle(el).backgroundColor;
+            document.body.removeChild(el);
+            const m = cs.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (!m) return true; // fallback assume light
+            let r = Number(m[1]) / 255;
+            let g = Number(m[2]) / 255;
+            let b = Number(m[3]) / 255;
+            [r, g, b] = [r, g, b].map(c => (c <= 0.03928) ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+            const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            return L > 0.5; // true = light
+        }
+
+        // Pick a random color from the array and apply it to the .clock-container only
+        // Also update the LIGHT button's contrast/outline to remain visible
         function setRandomLight() {
             const idx = Math.floor(Math.random() * lightColors.length);
             const color = lightColors[idx];
-            document.body.style.backgroundColor = color;
-            const btn = document.getElementById("light");
-            if (btn) btn.style.backgroundColor = color;
+            const container = document.querySelector('.clock-container');
+            const btn = document.getElementById('light');
+            if (container) {
+                container.style.backgroundColor = color;
+            }
+            // adjust button contrast and outline
+            if (btn) {
+                const light = isColorLight(color);
+                if (light) {
+                    btn.style.color = '#000';
+                    btn.style.boxShadow = '0 0 0 4px rgba(0,0,0,0.12)';
+                    btn.style.backgroundColor = 'rgba(255,255,255,0.85)';
+                } else {
+                    btn.style.color = '#fff';
+                    btn.style.boxShadow = '0 0 0 4px rgba(255,255,255,0.12)';
+                    btn.style.backgroundColor = 'rgba(0,0,0,0.25)';
+                }
+            }
         }
-        function myFunction() {
+        //Change input text to uppercase
+        function changeToLowerCase() {
             let x = document.getElementById("fname");
-            let inputValue = x.value;
-            x.value.toUpperCase();
+            const inputValue = x.value.toUpperCase();
             document.getElementById("setInput").innerHTML = inputValue + ' Digital Clock'
         }
+        
+        // (removed unused forDivContainer) additional div color logic can go here if needed
     </script>
 </head>
 <body>
-    <h1 style="color: brown;" id="setInput"></h1>
-    <button onclick="setRandomLight()" >LIGHT</button>
-    <div class="clock-container" id="light" onmouseover="setRandomLight" style= "text-align: center; margin-top: 20px;">
-       <div id="clock" style="font-size: 48px; font-family: monospace;"></div>
-    </div>
+     <h1 style="color: brown;" id="setInput"></h1>
+     <button id="light" onclick="setRandomLight()">LIGHT</button>
+     <div class="clock-container" style="text-align: center; margin-top: 20px;">
+         <div id="clock" style="font-size: 48px; font-family: monospace;"></div>
+     </div>
 </body>
 </html>
