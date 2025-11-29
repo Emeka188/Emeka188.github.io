@@ -1,0 +1,257 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.clock-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* Clock Container */
+.clock-container {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#clockCanvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.15));
+}
+
+.digital-display {
+    position: absolute;
+    bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+/* Controls Panel */
+.controls-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.controls-panel h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+.control-group label {
+    min-width: 120px;
+    font-weight: 500;
+}
+
+.control-group input[type="text"],
+.control-group input[type="number"],
+.control-group select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.control-group input[type="text"]:focus,
+.control-group input[type="number"]:focus,
+.control-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.control-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+#speedValue {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: #333;
+    border: 2px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background: #e8e8e8;
+    border-color: #667eea;
+}
+
+.control-group:has(button) {
+    display: flex;
+    gap: 10px;
+}
+
+/* Info Box */
+.info-box {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.8;
+}
+
+.info-box p {
+    margin: 5px 0;
+}
+
+.info-box span {
+    font-weight: 700;
+    color: #667eea;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .clock-wrapper {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .clock-container {
+        padding: 20px;
+    }
+    
+    .controls-panel {
+        padding: 20px;
+    }
+    
+    .controls-panel h2 {
+        font-size: 20px;
+    }
+    
+    #clockCanvas {
+        width: 100%;
+    }
+    
+    .digital-display {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .clock-wrapper {
+        gap: 15px;
+    }
+    
+    .clock-container,
+    .controls-panel {
+        padding: 15px;
+        border-radius: 15px;
+    }
+    
+    .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .control-group input,
+    .control-group select {
+        width: 100%;
+    }
+    
+    #speedValue {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Theme Transitions */
+.clock-container {
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+#clockCanvas {
+    transition: filter 0.5s ease;
+}
+
+/* Animation for hand movements */
+@keyframes rotateHand {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
