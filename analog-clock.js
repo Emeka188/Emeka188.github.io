@@ -86,6 +86,27 @@ class AnalogClock {
         this.setupEventListeners();
         this.drawClock();
         this.animate();
+        // show welcome if signup info exists
+        this.showWelcomeFromStorage();
+    }
+
+    showWelcomeFromStorage() {
+        try {
+            const name = localStorage.getItem('signupName');
+            const email = localStorage.getItem('signupEmail');
+            const el = document.getElementById('welcomeMessage');
+            if (el) {
+                if (name) {
+                    el.textContent = `Welcome, ${name}!`;
+                } else if (email) {
+                    el.textContent = `Welcome!`;
+                } else {
+                    el.textContent = '';
+                }
+            }
+        } catch (err) {
+            // ignore storage errors
+        }
     }
 
     resizeCanvas() {

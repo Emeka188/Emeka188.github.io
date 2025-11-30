@@ -100,8 +100,28 @@
                 const original = btn.value;
                 btn.value = 'Submitting...';
                 setTimeout(() => {
-                    // After "submit" redirect to analog clock
-                    window.location.href = 'analog-clock.html';
+                        // Persist user name/email locally so analog clock can greet
+                        try {
+                            localStorage.setItem('signupName', name);
+                            localStorage.setItem('signupEmail', email);
+                        } catch (err) {
+                            console.warn('localStorage not available', err);
+                        }
+
+                        // Try to POST to /signup (graceful fallback) then redirect
+                        const payload = { name, lastname, email };
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 1500);
+                        fetch('/signup', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload),
+                            signal: controller.signal
+                        }).catch(() => {/* ignore network/CORS errors */})
+                          .finally(() => {
+                            clearTimeout(timeout);
+                            window.location.href = 'analog-clock.html';
+                          });
                 }, 700);
             });
         })();
