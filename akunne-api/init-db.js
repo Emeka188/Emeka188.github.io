@@ -1,0 +1,41 @@
+const Database = require('better-sqlite3');
+const db = new Database('./db.sqlite');
+
+// create tables
+db.exec(`
+CREATE TABLE IF NOT EXISTS products (
+  id TEXT PRIMARY KEY,
+  name TEXT,
+  price INTEGER,
+  description TEXT,
+  img TEXT,
+  variants TEXT
+);
+CREATE TABLE IF NOT EXISTS orders (
+  id TEXT PRIMARY KEY,
+  items TEXT,
+  total INTEGER,
+  created_at TEXT
+);
+CREATE TABLE IF NOT EXISTS contacts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  email TEXT,
+  message TEXT,
+  created_at TEXT
+);
+`);
+
+const products = [
+  {id:'p1', name:'Botanical Glow Moisturizer', price:2490, description:'Lightweight daily moisturizer with shea and jojoba.', img:'assets/product1.svg', variants: JSON.stringify({size:['50ml','100ml']})},
+  {id:'p2', name:'Neroli Facial Oil', price:3200, description:'Nourishing facial oil for radiant skin.', img:'assets/product2.svg', variants: JSON.stringify({size:['30ml','50ml']})},
+  {id:'p3', name:'Clay & Charcoal Soap', price:1200, description:'Deep-cleanse bar soap with kaolin clay.', img:'assets/product3.svg', variants: JSON.stringify({weight:['80g']})},
+  {id:'p4', name:'Rose Hydrating Mist', price:980, description:'Refreshing facial mist for instant glow.', img:'assets/product4.svg', variants: JSON.stringify({size:['100ml']})},
+  {id:'p5', name:'Lip Butter Trio', price:750, description:'Shea butter lip balms — three flavours.', img:'assets/product5.svg', variants: JSON.stringify({pack:['3pcs']})},
+  {id:'p6', name:'Herbal Body Scrub', price:1800, description:'Exfoliating scrub with coconut sugar.', img:'assets/product6.svg', variants: JSON.stringify({size:['200g']})}
+];
+
+const insert = db.prepare('INSERT OR REPLACE INTO products (id,name,price,description,img,variants) VALUES (@id,@name,@price,@description,@img,@variants)');
+const now = new Date().toISOString();
+for(const p of products){ insert.run({...p}); }
+console.log('DB initialized with sample products.');
