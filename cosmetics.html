@@ -89,18 +89,22 @@
     <section id="contact" class="contact container">
       <h2>Contact & Orders</h2>
       <p>Send us a message or place an order request. We reply within 24 hours.</p>
-      <form id="contactForm" novalidate>
-        <div class="form-row">
-          <label for="name">Name</label>
-          <input id="name" name="name" required />
+      <form id="contactForm" novalidate class="futuristic-form">
+        <div class="f-row">
+          <div class="f-input">
+            <input id="name" name="name" required autocomplete="name" />
+            <label for="name">Full name</label>
+          </div>
+          <div class="f-input">
+            <input id="email" name="email" type="email" required autocomplete="email" />
+            <label for="email">Email address</label>
+          </div>
         </div>
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required />
-        </div>
-        <div class="form-row">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="4" required></textarea>
+        <div class="f-row">
+          <div class="f-input f-textarea">
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <label for="message">Your message or order details</label>
+          </div>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn primary">Send Message</button>
@@ -149,7 +153,13 @@
     <div id="cartItems" class="cart-items"></div>
     <div class="cart-footer">
       <div class="cart-total">Total: <strong id="cartTotal">₦0.00</strong></div>
-      <button id="checkoutBtn" class="btn primary">Checkout</button>
+      <div class="checkout-form">
+        <div class="f-input"><input id="orderName" placeholder="" required><label for="orderName">Your full name</label></div>
+        <div class="f-input"><input id="orderEmail" type="email" placeholder="" required><label for="orderEmail">Email</label></div>
+        <div class="f-input"><input id="orderPhone" placeholder="" ><label for="orderPhone">Phone (optional)</label></div>
+        <div class="f-input f-textarea"><textarea id="orderAddress" rows="2" placeholder=""></textarea><label for="orderAddress">Delivery address (optional)</label></div>
+        <button id="checkoutBtn" class="btn primary">Place Order</button>
+      </div>
     </div>
   </aside>
 

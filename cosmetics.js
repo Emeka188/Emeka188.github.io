@@ -164,11 +164,18 @@ cartItemsEl.addEventListener('click', e=>{
 });
 
 checkoutBtn.addEventListener('click', async ()=>{
-        // attempt server-side checkout, fallback to local simulation
-        const items = {...CART};
-        const totalRaw = cartTotal.textContent.replace(/[^0-9.-]/g,'');
-        const total = Math.round(parseFloat(totalRaw) * 100) || 0;
-        const payload = {items, total};
+    // attempt server-side checkout, fallback to local simulation
+    const items = {...CART};
+    const totalRaw = cartTotal.textContent.replace(/[^0-9.-]/g,'');
+    const total = Math.round(parseFloat(totalRaw) * 100) || 0;
+    // collect customer details from checkout form
+    const customer = {
+        name: document.getElementById('orderName')?.value || '',
+        email: document.getElementById('orderEmail')?.value || '',
+        phone: document.getElementById('orderPhone')?.value || '',
+        address: document.getElementById('orderAddress')?.value || ''
+    };
+    const payload = {items, total, customer};
         let ok = false;
         try{
             const res = await apiFetch('/api/orders', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload)});
@@ -186,6 +193,8 @@ checkoutBtn.addEventListener('click', async ()=>{
             localStorage.setItem('akunne_last_order', JSON.stringify(order));
             alert('Thank you! Your order has been placed (local simulation).');
         }
+        // clear checkout form fields
+        ['orderName','orderEmail','orderPhone','orderAddress'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
         CART = {}; saveCart();
         cartDrawer.setAttribute('aria-hidden','true');
 });
