@@ -6,7 +6,7 @@
 </head>
 <body>
     <p id="demo"></p>
-</body>
+    <p id="demo1"></p>
 <script>
     alert("This is an example of Object.defineProperty()");
     let person = {
@@ -23,5 +23,12 @@
     }
 
     document.getElementById('demo').innerHTML = outPut ;
+
+
+function add(a, b) {
+    return a * b;
+}
+document.getElementById("demo1").innerHTML = add(8, 2);
 </script>
+</body>
 </html>
