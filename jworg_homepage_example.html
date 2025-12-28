@@ -136,23 +136,41 @@
       .navbar ul li { margin: 8px 0 0 0; }
       #lang-select { margin: 10px 0 0 0; }
     }
+
+    /* Submenu accessibility and behavior (global) */
+    .navbar .has-submenu { position: relative; }
+    /* Hidden by default */
+    .navbar .submenu { display: none; min-width: 200px; z-index: 5; background:#222; margin-top:8px; padding:8px; border-radius:4px; }
+    /* Show on toggle (aria-expanded); hover/focus only on larger screens */
+    .navbar .has-submenu[aria-expanded="true"] > .submenu { display: block; }
+    @media (min-width: 601px) {
+      .navbar li.has-submenu:hover > .submenu,
+      .navbar li.has-submenu:focus-within > .submenu { display: block; }
+    }
+    .navbar .submenu a { display: block; color: #fff; padding:6px 8px; text-decoration:none; }
+    .navbar .submenu a:focus { outline: 2px solid #0099ff; }
+
+    @media (max-width: 600px) {
+      .navbar ul { flex-direction: column; position: relative; }
+      .navbar .submenu { position: static; margin-top: 8px; padding-left: 8px; border-radius: 6px; }
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
   <div class="jw-gradient-bar"></div>
     <div class="logo">
-      <a href="https://jw.org" target="_self" rel="noopener">
+      <a href="https://jw.org" target="_self">
         <img src="JW.jpg" alt="JW Logo">
       </a>
     </div>
     <ul>
       <li><a href="https://www.jw.org" class="active">Home</a></li>
-      <li>
-        <a href="https://www.jw.org/en/bible-teachings/">Bible Teachings</a>
-        <ul style="position:absolute; background:#222; display:none; margin-top:8px; padding:8px; border-radius:4px;">
-          <li><a href="https://www.jw.org/en/bible-teachings/questions/">Bible Questions Answered</a></li>
-          <li><a href="https://www.jw.org/en/bible-teachings/bible-study/">Bible Study</a></li>
+      <li class="has-submenu" aria-haspopup="true" aria-expanded="false">
+        <a href="https://www.jw.org/en/bible-teachings/" aria-controls="bible-submenu">Bible Teachings</a>
+        <ul id="bible-submenu" class="submenu" role="menu" aria-hidden="true">
+          <li role="none"><a role="menuitem" href="https://www.jw.org/en/bible-teachings/questions/">Bible Questions Answered</a></li>
+          <li role="none"><a role="menuitem" href="https://www.jw.org/en/bible-teachings/bible-study/">Bible Study</a></li>
         </ul>
       </li>
       <li><a href="https://www.jw.org/en/library/">Library</a></li>
@@ -162,7 +180,7 @@
     <select id="lang-select" style="margin-left:20px; padding:4px 8px; border-radius:4px;">
       <option value="en">English</option>
       <option value="es">Espanol</option>
-      <option value="fr">Francas</option>
+      <option value="fr">Français</option>
       <option value="pt">Portuguese</option>
       <option value="ig">Igbo</option>
       <option value="yo">Yoruba</option>
@@ -309,30 +327,80 @@
   <!-- Footer -->
   <footer style="background:#222; color:#fff; text-align:center; padding:30px 10px 10px 10px; margin-top:40px;">
     <div style="max-width:900px; margin:auto;">
-      <p>&copy; 2025 Jehovah's Witnesses. All rights reserved.</p>
+      <p>&copy; <span id="date" aria-live="polite"></span> Jehovah's Witnesses. All rights reserved.</p>
       <p>
         <a href="https://www.jw.org/en/contact-us/" style="color:#0099ff; text-decoration:none;">Contact Us</a> |
         <a href="https://www.jw.org/en/privacy-policy/" style="color:#0099ff; text-decoration:none;">Privacy Policy</a>
       </p>
     </div>
   </footer>
-</body>
 <script>
+
+//footer date code
+// Set footer year directly
+document.getElementById('date').textContent = new Date().getFullYear();
+
 // Simple language selector redirect
 document.getElementById('lang-select').addEventListener('change', function() {
   var lang = this.value;
   var url = 'https://www.jw.org/' + (lang === 'en' ? '' : lang + '/');
   window.location.href = url;
 });
-// Simple dropdown for Bible Teachings
+// Accessible dropdown for Bible Teachings (hover, keyboard, and touch)
 const navItems = document.querySelectorAll('.navbar ul > li');
 navItems.forEach(function(item) {
-  if(item.querySelector('ul')) {
+  const submenu = item.querySelector('.submenu');
+  const toggleLink = item.querySelector('a');
+  if (submenu) {
+    // Initialize ARIA
+    item.setAttribute('aria-haspopup', 'true');
+    item.setAttribute('aria-expanded', 'false');
+    submenu.setAttribute('aria-hidden', 'true');
+
+    // Show on hover (desktop)
     item.addEventListener('mouseenter', function() {
-      item.querySelector('ul').style.display = 'block';
+      item.setAttribute('aria-expanded', 'true');
+      submenu.setAttribute('aria-hidden', 'false');
     });
     item.addEventListener('mouseleave', function() {
-      item.querySelector('ul').style.display = 'none';
+      item.setAttribute('aria-expanded', 'false');
+      submenu.setAttribute('aria-hidden', 'true');
+    });
+
+    // Toggle on click for touch / mobile (prevent navigation on first tap)
+    toggleLink.addEventListener('click', function(e) {
+      if (window.matchMedia('(max-width: 600px)').matches) {
+        e.preventDefault();
+        const expanded = item.getAttribute('aria-expanded') === 'true';
+        item.setAttribute('aria-expanded', String(!expanded));
+        submenu.setAttribute('aria-hidden', String(expanded));
+      }
+    });
+
+    // Keyboard support: Enter/Space toggles; Escape closes
+    toggleLink.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const expanded = item.getAttribute('aria-expanded') === 'true';
+        item.setAttribute('aria-expanded', String(!expanded));
+        submenu.setAttribute('aria-hidden', String(expanded));
+        if (!expanded) {
+          const first = submenu.querySelector('a');
+          if (first) first.focus();
+        }
+      } else if (e.key === 'Escape') {
+        item.setAttribute('aria-expanded', 'false');
+        submenu.setAttribute('aria-hidden', 'true');
+        toggleLink.focus();
+      }
+    });
+
+    // Close submenu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!item.contains(e.target)) {
+        item.setAttribute('aria-expanded', 'false');
+        submenu.setAttribute('aria-hidden', 'true');
+      }
     });
   }
 });

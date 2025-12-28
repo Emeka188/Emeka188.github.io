@@ -7,6 +7,7 @@
 <body>
     <p id="demo"></p>
     <p id="demo1"></p>
+    <p id="date"></p>
 <script>
     alert("This is an example of Object.defineProperty()");
     let person = {
@@ -29,6 +30,13 @@ function add(a, b) {
     return a * b;
 }
 document.getElementById("demo1").innerHTML = add(8, 2);
+function newYear() {
+  let now = new Date();
+  let year = now.getFullYear();
+  document.getElementById("date").innerHTML = year;
+}
+newYear()
+
 </script>
 </body>
 </html>
