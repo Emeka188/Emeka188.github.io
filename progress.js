@@ -2,6 +2,7 @@
 const progressBar = document.getElementById('progress-bar');
 const progressLabel = document.getElementById('progress-label');
 
+progressBar.value = 0;
 // Function to change the progress value
 function changeProgress(amount) {
     // Get the current value and max value
@@ -26,8 +27,8 @@ function changeProgress(amount) {
 
     // Add an alert if min/max is reached (as seen in search results)
     if (newValue === maxValue && amount > 0) {
-        alert("You reached the maximum length of the progressbar!"); 
+        alert("Oga e don do na!"); 
     } else if (newValue === 0 && amount < 0) {
-        alert("You reached the minimum length of the progressbar!");
+        alert("E don do seh");
     }
 }
